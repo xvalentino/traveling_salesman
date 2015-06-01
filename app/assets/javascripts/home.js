@@ -3,31 +3,45 @@ $(document).ready(function() {
   height = 570;
 
   var places = {
-    HNL: [-157 - 55 / 60 - 21 / 3600, 21 + 19 / 60 + 07 / 3600],
-    HKG: [113 + 54 / 60 + 53 / 3600, 22 + 18 / 60 + 32 / 3600],
-    SVO: [37 + 24 / 60 + 53 / 3600, 55 + 58 / 60 + 22 / 3600],
-    HAV: [-82 - 24 / 60 - 33 / 3600, 22 + 59 / 60 + 21 / 3600],
-    CCS: [-66 - 59 / 60 - 26 / 3600, 10 + 36 / 60 + 11 / 3600],
-    UIO: [-78 - 21 / 60 - 31 / 3600, 0 + 06 / 60 + 48 / 3600]
+    BAR: [41.3, 2],
+    BER: [52.5, 13.3],
+    BRU: [50.8, 4.3],
+    DUB: [53.3, 6.2],
+    HAM: [53.5, 10.0],
+    KIE: [50.4, 30.5],
+    LON: [51.5, 0.1],
+    MAD: [40.4, 3.7],
+    MIL: [45.5, 9.2],
+    MOS: [55.8, 37.6],
+    MUN: [48.1, 11.6],
+    PAR: [48.9, 2.4],
+    ROM: [41.9, 12.5],
+    VIE: [48.2, 16.4],
+    WAR: [52.2, 21]
   };
 
   var route = {
     type: "LineString",
     coordinates: [
-      places.HNL,
-      places.HKG,
-      places.SVO,
-      places.HAV,
-      places.CCS,
-      places.UIO
+      places.BAR,
+      places.BER,
+      places.BRU,
+      places.DUB,
+      places.HAM,
+      places.KIE,
+      places.LON,
+      places.MAD,
+      places.MIL,
+      places.MOS,
+      places.MUN,
+      places.PAR,
+      places.ROM,
+      places.VIE,
+      places.WAR
     ]
   };
 
-  var projection = d3.geo.kavrayskiy7()
-    .scale(170)
-    .rotate([-40, 0])
-    .translate([width / 2, height / 2])
-    .precision(.1);
+  var projection = d3.geo.mercator()
 
   var path = d3.geo.path()
     .projection(projection);
