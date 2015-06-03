@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'puma'
 # gem 'ai4r'
 gem 'rspec-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
