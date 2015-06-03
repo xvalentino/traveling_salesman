@@ -2,46 +2,68 @@ $(document).ready(function() {
   var width = 960,
   height = 570;
 
+  var format_coordinates = function (coordinates) {
+    x = coordinates[0]
+    y = coordinates[1]
+    return [y, x];
+  }
+
+  update_routes = function (routes) {
+    // loop
+    // routes = get request to rails
+    d3.select(".route").remove();
+
+    svg.append("path")
+      .datum(route)
+      .attr("class", "route")
+      .attr("d", path);
+   // sleep half second
+  }
+
   var places = {
-    BAR: [41.3, 2],
-    BER: [52.5, 13.3],
-    BRU: [50.8, 4.3],
-    DUB: [53.3, 6.2],
-    HAM: [53.5, 10.0],
-    KIE: [50.4, 30.5],
-    LON: [51.5, 0.1],
-    MAD: [40.4, 3.7],
-    MIL: [45.5, 9.2],
-    MOS: [55.8, 37.6],
-    MUN: [48.1, 11.6],
-    PAR: [48.9, 2.4],
-    ROM: [41.9, 12.5],
-    VIE: [48.2, 16.4],
-    WAR: [52.2, 21]
+    BAR: format_coordinates([41.3, 2]),
+    BER: format_coordinates([52.5, 13.3]),
+    BRU: format_coordinates([50.8, 4.3]),
+    DUB: format_coordinates([53.3, 6.2]),
+    HAM: format_coordinates([53.5, 10.0]),
+    KIE: format_coordinates([50.4, 30.5]),
+    LON: format_coordinates([51.5, 0.1]),
+    MAD: format_coordinates([40.4, 3.7]),
+    MIL: format_coordinates([45.5, 9.2]),
+    MOS: format_coordinates([55.8, 37.6]),
+    MUN: format_coordinates([48.1, 11.6]),
+    PAR: format_coordinates([48.9, 2.4]),
+    ROM: format_coordinates([41.9, 12.5]),
+    VIE: format_coordinates([48.2, 16.4]),
+    WAR: format_coordinates([52.2, 21])
   };
 
-  var route = {
-    type: "LineString",
-    coordinates: [
-      places.BAR,
-      places.BER,
-      places.BRU,
-      places.DUB,
-      places.HAM,
-      places.KIE,
-      places.LON,
-      places.MAD,
-      places.MIL,
-      places.MOS,
-      places.MUN,
-      places.PAR,
-      places.ROM,
-      places.VIE,
-      places.WAR
-    ]
-  };
+  // var route = {
+  //   type: "LineString",
+  //   coordinates: [
+  //     places.BAR,
+  //     places.BER,
+  //     places.BRU,
+  //     places.DUB,
+  //     places.HAM,
+  //     places.KIE,
+  //     places.LON,
+  //     places.MAD,
+  //     places.MIL,
+  //     places.MOS,
+  //     places.MUN,
+  //     places.PAR,
+  //     places.ROM,
+  //     places.VIE,
+  //     places.WAR
+  //   ]
+  // };
 
   var projection = d3.geo.mercator()
+    .scale((width + 1) / .5 / Math.PI)
+    .translate([width / 2.3, height / .65])
+    .precision(.1)
+    .center([5, 0]);
 
   var path = d3.geo.path()
     .projection(projection);
@@ -70,12 +92,7 @@ $(document).ready(function() {
     .attr("class", "graticule")
     .attr("d", path);
 
-  svg.append("path")
-    .datum(route)
-    .attr("class", "route")
-    .attr("d", path);
-
-  var point = svg.append("g")
+    var point = svg.append("g")
     .attr("class", "points")
     .selectAll("g")
     .data(d3.entries(places))
@@ -90,7 +107,7 @@ $(document).ready(function() {
     .attr("dy", ".71em")
     .text(function(d) { return d.key; });
 
-  d3.json("/assets/world-50m.json", function(error, world) {
+  d3.json("/assets/world-110m2.json", function(error, world) {
     svg.insert("path", ".graticule")
       .datum(topojson.feature(world, world.objects.land))
       .attr("class", "land")
