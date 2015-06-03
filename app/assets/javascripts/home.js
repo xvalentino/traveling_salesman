@@ -17,7 +17,7 @@ $(document).ready(function() {
       .datum(route)
       .attr("class", "route")
       .attr("d", path);
-   // sleep half second
+    // sleep half second
   }
 
   var places = {
@@ -92,7 +92,7 @@ $(document).ready(function() {
     .attr("class", "graticule")
     .attr("d", path);
 
-    var point = svg.append("g")
+  var point = svg.append("g")
     .attr("class", "points")
     .selectAll("g")
     .data(d3.entries(places))
@@ -120,4 +120,17 @@ $(document).ready(function() {
   });
 
   d3.select(self.frameElement).style("height", height + "px");
+  var source = new EventSource('/feed');
+
+  source.onmessage = function (event){
+    if (event.data === '"stream_end"') { 
+      source.close(); 
+      console.log(e);
+      return
+    };
+    var e = JSON.parse(event.data);
+    console.log(e);
+  }
+
+  console.log(source);
 });
