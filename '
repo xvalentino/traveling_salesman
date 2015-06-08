@@ -23,6 +23,7 @@ class PagesController < ApplicationController
         offsprings = search.reproduction selected_to_breed  #Generate the population for this new generation
         search.replace_worst_ranked offsprings
         sse.write(search.best_chromosome.data)
+        sleep(1)
       end
       sse.write("stream_end")
     rescue IOError

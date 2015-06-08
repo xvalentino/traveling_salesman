@@ -8,16 +8,13 @@ $(document).ready(function() {
     return [y, x];
   }
 
-  update_routes = function (routes) {
-    // loop
-    // routes = get request to rails
+  updateRoutes = function (routes) {
     d3.select(".route").remove();
 
     svg.append("path")
-      .datum(route)
+      .datum(routes)
       .attr("class", "route")
       .attr("d", path);
-    // sleep half second
   }
 
   var places = {
@@ -38,26 +35,44 @@ $(document).ready(function() {
     WAR: format_coordinates([52.2, 21])
   };
 
-  // var route = {
-  //   type: "LineString",
-  //   coordinates: [
-  //     places.BAR,
-  //     places.BER,
-  //     places.BRU,
-  //     places.DUB,
-  //     places.HAM,
-  //     places.KIE,
-  //     places.LON,
-  //     places.MAD,
-  //     places.MIL,
-  //     places.MOS,
-  //     places.MUN,
-  //     places.PAR,
-  //     places.ROM,
-  //     places.VIE,
-  //     places.WAR
-  //   ]
-  // };
+  var placesArray = [
+    places.BAR,
+    places.BER,
+    places.BRU,
+    places.DUB,
+    places.HAM,
+    places.KIE,
+    places.LON,
+    places.MAD,
+    places.MIL,
+    places.MOS,
+    places.MUN,
+    places.PAR,
+    places.ROM,
+    places.VIE,
+    places.WAR
+  ]
+
+  var route = {
+    type: "LineString",
+    coordinates: [
+      places.BAR,
+      places.BER,
+      places.BRU,
+      places.DUB,
+      places.HAM,
+      places.KIE,
+      places.LON,
+      places.MAD,
+      places.MIL,
+      places.MOS,
+      places.MUN,
+      places.PAR,
+      places.ROM,
+      places.VIE,
+      places.WAR
+    ]
+  };
 
   var projection = d3.geo.mercator()
     .scale((width + 1) / .5 / Math.PI)
@@ -125,11 +140,23 @@ $(document).ready(function() {
   source.onmessage = function (event){
     if (event.data === '"stream_end"') { 
       source.close(); 
-      console.log(e);
       return
     };
     var e = JSON.parse(event.data);
-    console.log(e);
+
+    var routesPlaces = e.map(function(index) {
+      return placesArray[index];
+    })
+
+    var routes = {
+      type: "LineString",
+      coordinates: routesPlaces
+    };
+
+
+    console.log("raw = " + e);
+    console.log("routes = " + routes)
+      updateRoutes(routes);
   }
 
   console.log(source);
