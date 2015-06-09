@@ -135,29 +135,33 @@ $(document).ready(function() {
   });
 
   d3.select(self.frameElement).style("height", height + "px");
-  var source = new EventSource('/feed');
-
-  source.onmessage = function (event){
-    if (event.data === '"stream_end"') { 
-      source.close(); 
-      return
-    };
-    var e = JSON.parse(event.data);
-
-    var routesPlaces = e.map(function(index) {
-      return placesArray[index];
-    })
-
-    var routes = {
-      type: "LineString",
-      coordinates: routesPlaces
-    };
 
 
-    console.log("raw = " + e);
-    console.log("routes = " + routes)
+  $("#start").on('click', function() {
+    var gen = $("#gen").val();
+    var pop = $("#pop").val();
+    var mutation = $("#mutation").val();
+
+    source = new EventSource('/feed?' + "gen=" + gen + "&pop=" + pop + "&mutation=" + mutation);
+    source.onmessage = function (event){
+      if (event.data === '"stream_end"') { 
+        source.close(); 
+        return
+      };
+      var e = JSON.parse(event.data);
+
+      var routesPlaces = e.map(function(index) {
+        return placesArray[index];
+      })
+
+      var routes = {
+        type: "LineString",
+        coordinates: routesPlaces
+      };
+
+
       updateRoutes(routes);
-  }
+    }
+  });
 
-  console.log(source);
 });

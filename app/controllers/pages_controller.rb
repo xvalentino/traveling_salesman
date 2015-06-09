@@ -14,8 +14,13 @@ class PagesController < ApplicationController
     data_set.data_items.collect! {|column| column.collect {|element| element.to_f}}
     Chromosome.set_cost_matrix(data_set.data_items)
 
-    max_generation = 100
-    search = GeneticSearch.new(800, max_generation)
+    max_generation = params['gen'].to_i
+    max_generation = 100 if max_generation > 100
+    population = params['pop'].to_i
+    population = 1000 if population > 1000
+    mutation_rate = params['mutation'].to_f
+
+    search = GeneticSearch.new(population, max_generation, mutation_rate)
     begin
       search.generate_initial_population                    #Generate initial population 
       max_generation.times do
