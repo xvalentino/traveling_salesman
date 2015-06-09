@@ -1,9 +1,12 @@
 <h1>Traveling SalesMan Demo</h1>
+<%= button_tag "start", id: "start" %>
+</br>
 <label>Max Generation</label>
-<input id="gen"></input>
+<input id="gen" value=100></input>
 </br>
 <label>Population Size</label>
-<input id="pop"></input>
+<input id="pop" value="800"></input>
+</br>
 <label>Mutation Rate</label>
-<input id="mutation"></input>
-<%= button_tag "start", id: "start" %>
+<input id="mutation" value="0.6"></input>
+<h1 id="fitness">Cost:</h1>

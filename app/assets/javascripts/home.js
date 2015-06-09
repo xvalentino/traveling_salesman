@@ -148,9 +148,13 @@ $(document).ready(function() {
         source.close(); 
         return
       };
-      var e = JSON.parse(event.data);
+      var response = JSON.parse(event.data);
+      var route = response.route
+      var fitness = response.fitness
 
-      var routesPlaces = e.map(function(index) {
+      $("#fitness").text("Cost: $" + fitness)
+
+      var routesPlaces = route.map(function(index) {
         return placesArray[index];
       })
 

@@ -27,7 +27,7 @@ class PagesController < ApplicationController
         selected_to_breed = search.selection                #Evaluates current population 
         offsprings = search.reproduction selected_to_breed  #Generate the population for this new generation
         search.replace_worst_ranked offsprings
-        sse.write(search.best_chromosome.data)
+        sse.write({route: search.best_chromosome.data, fitness: -search.best_chromosome.fitness.to_i})
       end
       sse.write("stream_end")
     rescue IOError
