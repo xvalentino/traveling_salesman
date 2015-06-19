@@ -42,8 +42,8 @@ class Chromosome
   # order of 2 consecutive randome nodes 
   # (e.g. from [ 0, 1, 2, 4] to [0, 2, 1, 4]) if:
   #     ((1 - chromosome.normalized_fitness) * 0.4)
-  def self.mutate(chromosome)
-    if chromosome.normalized_fitness && rand < ((1 - chromosome.normalized_fitness) * 0.3)
+  def self.mutate(chromosome, mutation_rate)
+    if chromosome.normalized_fitness && rand < ((1 - chromosome.normalized_fitness) * mutation_rate)
       data = chromosome.data
       index = rand(data.length-1)
       data[index], data[index+1] = data[index+1], data[index]

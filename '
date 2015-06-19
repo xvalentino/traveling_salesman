@@ -14,20 +14,16 @@ class PagesController < ApplicationController
     data_set.data_items.collect! {|column| column.collect {|element| element.to_f}}
     Chromosome.set_cost_matrix(data_set.data_items)
 
-    max_generation = params['gen'].to_i
-    max_generation = 100 if max_generation > 100
-    population = params['pop'].to_i
-    population = 1000 if population > 1000
-    mutation_rate = params['mutation'].to_f
-
-    search = GeneticSearch.new(population, max_generation, mutation_rate)
+    max_generation = 100
+    search = GeneticSearch.new(800, max_generation)
     begin
       search.generate_initial_population                    #Generate initial population 
       max_generation.times do
         selected_to_breed = search.selection                #Evaluates current population 
         offsprings = search.reproduction selected_to_breed  #Generate the population for this new generation
         search.replace_worst_ranked offsprings
-        sse.write({route: search.best_chromosome.data, fitness: -search.best_chromosome.fitness.to_i})
+        sse.write(search.best_chromosome.data)
+        sleep(1)
       end
       sse.write("stream_end")
     rescue IOError

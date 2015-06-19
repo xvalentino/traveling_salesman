@@ -33,13 +33,14 @@
 #                 # its fitness, reproduce, and mutate functions, to model your specific problem.
 class GeneticSearch
 
-  attr_accessor :population
+  attr_accessor :population, :mutation_rate
 
 
-  def initialize(initial_population_size, generations)
+  def initialize(initial_population_size, generations, mutation_rate)
     @population_size = initial_population_size
     @max_generation = generations
     @generation = 0
+    @mutation_rate = mutation_rate
   end
 
   #     1. Choose initial population
@@ -119,7 +120,7 @@ class GeneticSearch
       offsprings << Chromosome.reproduce(selected_to_breed[2*i], selected_to_breed[2*i+1])
     end
     @population.each do |individual|
-      Chromosome.mutate(individual)
+      Chromosome.mutate(individual, mutation_rate)
     end
     return offsprings
   end
